@@ -4,10 +4,10 @@ type ParamValue = string | number | bigint | boolean
 
 export type ScannedRoutes = {
   ALL: {
-    'auth.new_account.store': { paramsTuple?: []; params?: {} }
-    'auth.access_tokens.store': { paramsTuple?: []; params?: {} }
+    'auth.auth.login': { paramsTuple?: []; params?: {} }
+    'auth.auth.register': { paramsTuple?: []; params?: {} }
     'profile.profile.show': { paramsTuple?: []; params?: {} }
-    'profile.access_tokens.destroy': { paramsTuple?: []; params?: {} }
+    'profile.auth.logout': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
@@ -16,9 +16,9 @@ export type ScannedRoutes = {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
   }
   POST: {
-    'auth.new_account.store': { paramsTuple?: []; params?: {} }
-    'auth.access_tokens.store': { paramsTuple?: []; params?: {} }
-    'profile.access_tokens.destroy': { paramsTuple?: []; params?: {} }
+    'auth.auth.login': { paramsTuple?: []; params?: {} }
+    'auth.auth.register': { paramsTuple?: []; params?: {} }
+    'profile.auth.logout': { paramsTuple?: []; params?: {} }
   }
 }
 declare module '@adonisjs/core/types/http' {

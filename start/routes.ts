@@ -9,13 +9,13 @@ router.get('/', () => {
 
 router.group(() => {
     router.group(() => {
-        router.post('signup', [controllers.NewAccount, 'store'])
-        router.post('login', [controllers.AccessTokens, 'store'])
+        router.post('login', [controllers.api.Auth, 'login'])
+        router.post('register', [controllers.api.Auth, 'register'])
       }).prefix('auth').as('auth')
 
     router.group(() => {
         router.get('profile', [controllers.Profile, 'show'])
-        router.post('logout', [controllers.AccessTokens, 'destroy'])
+        router.post('logout', [controllers.api.Auth, 'logout'])
       }).prefix('account').as('profile').use(middleware.auth())
 
 }).prefix('/api/v1')
