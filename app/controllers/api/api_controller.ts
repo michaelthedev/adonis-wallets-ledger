@@ -28,10 +28,11 @@ export default class ApiController {
         ? null
         : await this.ctx.serialize.withoutWrapping(data, this.ctx.containerResolver)
 
-    return response.status(status).json({
-      status: status < 400 ? 'success' : 'failed',
+    response.status(status);
+    return {
+      success: status < 400,
       message,
       data: payload,
-    })
+    }
   }
 }

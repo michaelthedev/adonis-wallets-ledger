@@ -5,8 +5,8 @@
 
 export const controllers = {
   api: {
-    Auth: () => import('#controllers/api/auth_controller'),
     Api: () => import('#controllers/api/api_controller'),
+    Auth: () => import('#controllers/api/auth_controller'),
   },
   Profile: () => import('#controllers/profile_controller'),
 }
