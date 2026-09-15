@@ -4,6 +4,7 @@ import {loginValidator, signupValidator} from "#validators/user";
 import User from "#models/user";
 import UserTransformer from "#transformers/user_transformer";
 import ApiController from "#controllers/api/api_controller";
+import {AccessToken} from "@adonisjs/auth/access_tokens";
 
 
 export default class AuthController extends ApiController {
@@ -16,9 +17,7 @@ export default class AuthController extends ApiController {
     });
 
     return this.response('success', {
-      type: 'bearer',
-      expiryAt: token.expiresAt,
-      token: token.value!.release(),
+      ...this.#tokenResponse(token),
       user: UserTransformer.transform(user),
     })
   }
@@ -34,8 +33,8 @@ export default class AuthController extends ApiController {
     await this.#createDefaultWallets(user)
 
     return this.response('success', {
+      ...this.#tokenResponse(token),
       user: UserTransformer.transform(user),
-      token: token.value!.release(),
     }, 201)
   }
 
@@ -56,4 +55,11 @@ export default class AuthController extends ApiController {
     }
   }
 
+  #tokenResponse(token: AccessToken) {
+    return {
+      type: 'bearer',
+      expiryAt: token.expiresAt,
+      token: token.value!.release(),
+    }
+  }
 }
