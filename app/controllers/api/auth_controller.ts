@@ -31,6 +31,8 @@ export default class AuthController extends ApiController {
       expiresIn: '7 days'
     })
 
+    await this.#createDefaultWallets(user)
+
     return this.response('success', {
       user: UserTransformer.transform(user),
       token: token.value!.release(),
@@ -45,4 +47,13 @@ export default class AuthController extends ApiController {
 
     return this.response('success');
   }
+
+  async #createDefaultWallets(user: User) {
+    const currencies: string[] = ['NGN', 'USD'];
+
+    for (const currency of currencies) {
+      await user.related('wallets').create({currency});
+    }
+  }
+
 }
