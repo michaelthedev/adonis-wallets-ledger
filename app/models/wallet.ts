@@ -1,8 +1,11 @@
 import { WalletSchema } from '#database/schema'
-import {belongsTo, hasMany} from '@adonisjs/lucid/orm'
-import type {BelongsTo, HasMany} from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
 import LedgerEntry from "#models/ledger_entry";
+
+import db from "@adonisjs/lucid/services/db";
+import {belongsTo, hasMany} from '@adonisjs/lucid/orm'
+import type {BelongsTo, HasMany} from '@adonisjs/lucid/types/relations'
+import {TransactionClientContract} from "@adonisjs/lucid/types/database";
 
 export default class Wallet extends WalletSchema {
   @belongsTo(() => User)
@@ -10,4 +13,19 @@ export default class Wallet extends WalletSchema {
 
   @hasMany(() => LedgerEntry)
   declare ledgerEntries: HasMany<typeof LedgerEntry>
+
+  async balance(trx?: TransactionClientContract) {
+    const query = trx ? LedgerEntry.query({ client: trx }) : LedgerEntry.query()
+
+    const result = await query
+      .where('wallet_id', this.id)
+      .select(
+        db.raw(`
+          COALESCE(SUM(CASE WHEN direction = 'credit' THEN amount ELSE 0 END), 0) -
+          COALESCE(SUM(CASE WHEN direction = 'debit' THEN amount ELSE 0 END), 0) as balance
+        `)
+      ).first()
+
+    return Number(result?.$extras.balance ?? 0)
+  }
 }
