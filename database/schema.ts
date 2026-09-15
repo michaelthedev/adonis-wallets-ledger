@@ -36,7 +36,7 @@ export class LedgerEntrySchema extends BaseModel {
   static $columns = ['amount', 'createdAt', 'currency', 'direction', 'id', 'transactionId', 'updatedAt', 'walletId'] as const
   $columns = LedgerEntrySchema.$columns
   @column()
-  declare amount: bigint | number
+  declare amount: number
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
   @column()

@@ -22,7 +22,7 @@ export default class extends BaseSchema {
         .onDelete('RESTRICT')
 
       table.enum('direction', ['credit', 'debit']).notNullable()
-      table.bigInteger('amount').unsigned().notNullable()
+      table.integer('amount').unsigned().notNullable()
       table.string('currency').notNullable()
 
       table.timestamp('created_at')
