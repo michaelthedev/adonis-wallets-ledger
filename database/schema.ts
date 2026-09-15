@@ -32,6 +32,46 @@ export class AuthAccessTokenSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class LedgerEntrySchema extends BaseModel {
+  static $columns = ['amount', 'createdAt', 'currency', 'direction', 'id', 'transactionId', 'updatedAt', 'walletId'] as const
+  $columns = LedgerEntrySchema.$columns
+  @column()
+  declare amount: bigint | number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare currency: string
+  @column()
+  declare direction: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare transactionId: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare walletId: number
+}
+
+export class TransactionSchema extends BaseModel {
+  static $columns = ['completedAt', 'createdAt', 'id', 'idempotencyKey', 'status', 'type', 'uid'] as const
+  $columns = TransactionSchema.$columns
+  @column.dateTime()
+  declare completedAt: DateTime | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare idempotencyKey: string | null
+  @column()
+  declare status: string
+  @column()
+  declare type: string
+  @column()
+  declare uid: string
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['createdAt', 'email', 'firstName', 'id', 'lastName', 'password', 'updatedAt'] as const
   $columns = UserSchema.$columns
