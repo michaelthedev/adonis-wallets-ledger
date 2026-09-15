@@ -55,4 +55,16 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['logout']>>>
     }
   }
+  'wallets.wallets.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/wallets'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['index']>>>
+    }
+  }
 }

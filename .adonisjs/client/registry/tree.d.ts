@@ -16,4 +16,9 @@ export interface ApiDefinition {
       logout: typeof routes['profile.auth.logout']
     }
   }
+  wallets: {
+    wallets: {
+      index: typeof routes['wallets.wallets.index']
+    }
+  }
 }

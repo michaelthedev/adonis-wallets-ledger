@@ -8,12 +8,15 @@ export type ScannedRoutes = {
     'auth.auth.register': { paramsTuple?: []; params?: {} }
     'profile.profile.show': { paramsTuple?: []; params?: {} }
     'profile.auth.logout': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.index': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.index': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.index': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'auth.auth.login': { paramsTuple?: []; params?: {} }
