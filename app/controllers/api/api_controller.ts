@@ -1,9 +1,14 @@
 import { HttpContext } from '@adonisjs/core/http';
 import {inject} from "@adonisjs/core";
+import User from "#models/user";
 
 @inject()
 export default class ApiController {
   constructor(protected ctx: HttpContext) {}
+
+  protected getUser(): User {
+    return this.ctx.auth.getUserOrFail()
+  }
 
   /**
    * Usage:
