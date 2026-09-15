@@ -27,7 +27,9 @@ export default class AuthController extends ApiController {
     const { firstName, lastName, email, password } = await request.validateUsing(signupValidator)
 
     const user = await User.create({ firstName, lastName, email, password })
-    const token = await User.accessTokens.create(user)
+    const token = await User.accessTokens.create(user, ['*'], {
+      expiresIn: '7 days'
+    })
 
     return this.response('success', {
       user: UserTransformer.transform(user),
