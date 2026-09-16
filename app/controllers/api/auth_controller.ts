@@ -17,7 +17,7 @@ export default class AuthController extends ApiController {
     });
 
     return this.response('success', {
-      ...this.#tokenResponse(token),
+      ...this.tokenResponse(token),
       user: UserTransformer.transform(user),
     })
   }
@@ -30,10 +30,10 @@ export default class AuthController extends ApiController {
       expiresIn: '7 days'
     })
 
-    await this.#createDefaultWallets(user)
+    await this.createDefaultWallets(user)
 
     return this.response('success', {
-      ...this.#tokenResponse(token),
+      ...this.tokenResponse(token),
       user: UserTransformer.transform(user),
     }, 201)
   }
@@ -47,7 +47,7 @@ export default class AuthController extends ApiController {
     return this.response('success');
   }
 
-  async #createDefaultWallets(user: User) {
+  private async createDefaultWallets(user: User) {
     const currencies: string[] = ['NGN', 'USD'];
 
     for (const currency of currencies) {
@@ -55,7 +55,7 @@ export default class AuthController extends ApiController {
     }
   }
 
-  #tokenResponse(token: AccessToken) {
+  private tokenResponse(token: AccessToken) {
     return {
       type: 'bearer',
       expiryAt: token.expiresAt,
