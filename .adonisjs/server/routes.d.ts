@@ -9,19 +9,24 @@ export type ScannedRoutes = {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
     'profile.auth.logout': { paramsTuple?: []; params?: {} }
     'wallets.wallets.index': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.transfer': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.single': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   GET: {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
     'wallets.wallets.index': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.single': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   HEAD: {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
     'wallets.wallets.index': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.single': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   POST: {
     'auth.auth.login': { paramsTuple?: []; params?: {} }
     'auth.auth.register': { paramsTuple?: []; params?: {} }
     'profile.auth.logout': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.transfer': { paramsTuple?: []; params?: {} }
   }
 }
 declare module '@adonisjs/core/types/http' {

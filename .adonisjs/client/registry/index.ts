@@ -36,6 +36,18 @@ const routes = {
     tokens: [{"old":"/api/v1/wallets","type":0,"val":"api","end":""},{"old":"/api/v1/wallets","type":0,"val":"v1","end":""},{"old":"/api/v1/wallets","type":0,"val":"wallets","end":""}],
     types: placeholder as Registry['wallets.wallets.index']['types'],
   },
+  'wallets.wallets.transfer': {
+    methods: ["POST"],
+    pattern: '/api/v1/wallets/transfer',
+    tokens: [{"old":"/api/v1/wallets/transfer","type":0,"val":"api","end":""},{"old":"/api/v1/wallets/transfer","type":0,"val":"v1","end":""},{"old":"/api/v1/wallets/transfer","type":0,"val":"wallets","end":""},{"old":"/api/v1/wallets/transfer","type":0,"val":"transfer","end":""}],
+    types: placeholder as Registry['wallets.wallets.transfer']['types'],
+  },
+  'wallets.wallets.single': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/wallets/:id',
+    tokens: [{"old":"/api/v1/wallets/:id","type":0,"val":"api","end":""},{"old":"/api/v1/wallets/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/wallets/:id","type":0,"val":"wallets","end":""},{"old":"/api/v1/wallets/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['wallets.wallets.single']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

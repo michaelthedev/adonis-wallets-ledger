@@ -67,4 +67,28 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['index']>>>
     }
   }
+  'wallets.wallets.transfer': {
+    methods: ["POST"]
+    pattern: '/api/v1/wallets/transfer'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/wallet').transferValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/wallet').transferValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['transfer']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['transfer']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'wallets.wallets.single': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/wallets/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['single']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['single']>>>
+    }
+  }
 }
