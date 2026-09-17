@@ -22,6 +22,8 @@ router.group(() => {
 
     router.group(() => {
       router.get('/', [controllers.api.Wallets, 'index'])
+      router.post('/transfer', [controllers.api.Wallets, 'transfer'])
+      router.get('/:id', [controllers.api.Wallets, 'single']).where('id', /^[0-9]+$/)
     }).prefix('wallets').as('wallets')
   }).use(middleware.auth())
 
