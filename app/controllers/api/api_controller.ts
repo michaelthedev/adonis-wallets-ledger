@@ -25,7 +25,7 @@ export default class ApiController {
     if (typeof message === 'object') {
       data = message.data || data
       status = message.status || status
-      message = message.message || 'Success'
+      message = message.message || 'success'
     }
 
     const payload =

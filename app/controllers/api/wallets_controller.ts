@@ -16,12 +16,14 @@ export default class WalletsController extends ApiController {
         (q) => q.where('direction', 'debit').sum('amount').as('debits')
       );
 
-    return this.response('success', {
-      wallets: wallets.map((wallet) => ({
+    return this.response({
+      data: wallets.map((wallet) => ({
         id: wallet.id,
         currency: wallet.currency,
         balance: Number(wallet.$extras.credits ?? 0) - Number(wallet.$extras.debits ?? 0),
-      })),
+      }))
+    });
+  }
     })
   }
 }
