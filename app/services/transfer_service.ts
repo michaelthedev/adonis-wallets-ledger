@@ -24,6 +24,11 @@ export default class TransferService {
         .where('email', receiver)
         .firstOrFail()
 
+      // block same user
+      if (senderUserId === receiverUser.id) {
+        throw new Error('You cannot transfer to yourself')
+      }
+
       let receiverWallet = await Wallet.query({ client: trx })
         .where('user_id', receiverUser.id)
         .where('currency', currency)
