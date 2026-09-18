@@ -5,6 +5,8 @@ import User from "#models/user";
 import UserTransformer from "#transformers/user_transformer";
 import ApiController from "#controllers/api/api_controller";
 import {AccessToken} from "@adonisjs/auth/access_tokens";
+import WalletService from "#services/wallet_service";
+import {inject} from "@adonisjs/core";
 
 
 export default class AuthController extends ApiController {
@@ -22,7 +24,8 @@ export default class AuthController extends ApiController {
     })
   }
 
-  async register({ request }: HttpContext) {
+  @inject()
+  async register({ request }: HttpContext, walletService: WalletService) {
     const { firstName, lastName, email, password } = await request.validateUsing(signupValidator)
 
     const user = await User.create({ firstName, lastName, email, password })
@@ -30,7 +33,7 @@ export default class AuthController extends ApiController {
       expiresIn: '7 days'
     })
 
-    await this.createDefaultWallets(user)
+    await walletService.createDefault(user.id)
 
     return this.response('success', {
       ...this.tokenResponse(token),
@@ -45,14 +48,6 @@ export default class AuthController extends ApiController {
     }
 
     return this.response('success');
-  }
-
-  private async createDefaultWallets(user: User) {
-    const currencies: string[] = ['NGN', 'USD'];
-
-    for (const currency of currencies) {
-      await user.related('wallets').create({currency});
-    }
   }
 
   private tokenResponse(token: AccessToken) {

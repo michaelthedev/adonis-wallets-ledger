@@ -20,10 +20,7 @@ export default class Wallet extends WalletSchema {
     const result = await query
       .where('wallet_id', this.id)
       .select(
-        db.raw(`
-          COALESCE(SUM(CASE WHEN direction = 'credit' THEN amount ELSE 0 END), 0) -
-          COALESCE(SUM(CASE WHEN direction = 'debit' THEN amount ELSE 0 END), 0) as balance
-        `)
+        db.raw(`COALESCE(SUM(CASE WHEN direction = 'credit' THEN amount ELSE -amount END)}, 0) as balance`)
       ).first()
 
     return Number(result?.$extras.balance ?? 0)

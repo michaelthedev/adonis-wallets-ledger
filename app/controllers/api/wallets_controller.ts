@@ -3,29 +3,14 @@ import ApiController from "#controllers/api/api_controller";
 
 import {transferValidator} from "#validators/wallet";
 import {inject} from "@adonisjs/core";
+import WalletService from "#services/wallet_service";
 import TransferService from "#services/transfer_service";
 
 export default class WalletsController extends ApiController {
-  async index() {
-    const user = this.getUser()
-    await user.load('wallets');
-
-    const wallets = await this.getUser()
-      .related('wallets')
-      .query()
-      .withAggregate('ledgerEntries',
-        (q) => q.where('direction', 'credit').sum('amount').as('credits')
-      )
-      .withAggregate('ledgerEntries',
-        (q) => q.where('direction', 'debit').sum('amount').as('debits')
-      );
-
+  @inject()
+  async index({}: HttpContext, walletService: WalletService) {
     return this.response({
-      data: wallets.map((wallet) => ({
-        id: wallet.id,
-        currency: wallet.currency,
-        balance: Number(wallet.$extras.credits ?? 0) - Number(wallet.$extras.debits ?? 0),
-      }))
+      data: await walletService.listWithBalance(this.getUser().id)
     });
   }
 

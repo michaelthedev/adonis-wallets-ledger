@@ -5,8 +5,17 @@ import Transaction from "#models/transaction";
 import LedgerEntry from "#models/ledger_entry";
 import {DateTime} from "luxon";
 import type {TransactionClientContract} from "@adonisjs/lucid/types/database";
+import {inject} from "@adonisjs/core";
+import WalletService from "#services/wallet_service";
 
+@inject()
 export default class TransferService {
+  private walletService: WalletService;
+
+  constructor(walletService: WalletService) {
+    this.walletService = walletService
+  }
+
   async init(
     senderUserId: number,
     receiver: string,
@@ -29,17 +38,8 @@ export default class TransferService {
         throw new Error('You cannot transfer to yourself')
       }
 
-      let receiverWallet = await Wallet.query({ client: trx })
-        .where('user_id', receiverUser.id)
-        .where('currency', currency)
-        .first()
-
-      if (! receiverWallet) {
-        receiverWallet = await Wallet.create(
-          { userId: receiverUser.id, currency },
-          { client: trx }
-        )
-      }
+      let receiverWallet = await this.walletService
+        .findOrCreate(receiverUser.id, currency, trx);
 
       return this.transfer(senderWallet, receiverWallet, amount, currency, trx)
     })
