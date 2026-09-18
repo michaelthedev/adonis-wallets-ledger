@@ -1,6 +1,6 @@
 import vine from '@vinejs/vine'
 
-const amountRule = () => vine.number().positive().decimal([0, 2])
+const amountRule = () => vine.number().positive().withoutDecimals()
 
 export const transferValidator = vine.create({
   amount: amountRule(),
