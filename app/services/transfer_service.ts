@@ -26,6 +26,7 @@ export default class TransferService {
       const senderWallet = await Wallet.query({ client: trx })
         .where('user_id', senderUserId)
         .where('currency', currency)
+        .forUpdate()
         .firstOrFail()
 
       //@todo: change to like username so this wont be used to confirm an email exists

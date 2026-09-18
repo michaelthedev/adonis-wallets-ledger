@@ -20,7 +20,18 @@ export default class WalletService {
       .where('currency', currency)
       .first()
 
-    return existing ?? await Wallet.create({userId, currency}, opts)
+    try {
+      return existing ?? await Wallet.create({userId, currency}, opts)
+    } catch (e: any) {
+      if (e.code === 'ER_DUP_ENTRY') {
+        return await Wallet.query(opts ?? {})
+          .where('user_id', userId)
+          .where('currency', currency)
+          .firstOrFail()
+      }
+
+      throw e
+    }
   }
 
   async lockFor(userId: number, currency: string, trx: TransactionClientContract) {
@@ -44,6 +55,4 @@ export default class WalletService {
       balance: Number(wallet.$extras.balance ?? 0),
     }));
   }
-
-  async getBalance() {}
 }
