@@ -9,6 +9,7 @@ export type ScannedRoutes = {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
     'profile.auth.logout': { paramsTuple?: []; params?: {} }
     'wallets.wallets.index': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.deposit': { paramsTuple?: []; params?: {} }
     'wallets.wallets.transfer': { paramsTuple?: []; params?: {} }
     'wallets.wallets.single': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
@@ -26,6 +27,7 @@ export type ScannedRoutes = {
     'auth.auth.login': { paramsTuple?: []; params?: {} }
     'auth.auth.register': { paramsTuple?: []; params?: {} }
     'profile.auth.logout': { paramsTuple?: []; params?: {} }
+    'wallets.wallets.deposit': { paramsTuple?: []; params?: {} }
     'wallets.wallets.transfer': { paramsTuple?: []; params?: {} }
   }
 }

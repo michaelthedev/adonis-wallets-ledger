@@ -36,6 +36,12 @@ const routes = {
     tokens: [{"old":"/api/v1/wallets","type":0,"val":"api","end":""},{"old":"/api/v1/wallets","type":0,"val":"v1","end":""},{"old":"/api/v1/wallets","type":0,"val":"wallets","end":""}],
     types: placeholder as Registry['wallets.wallets.index']['types'],
   },
+  'wallets.wallets.deposit': {
+    methods: ["POST"],
+    pattern: '/api/v1/wallets/deposit',
+    tokens: [{"old":"/api/v1/wallets/deposit","type":0,"val":"api","end":""},{"old":"/api/v1/wallets/deposit","type":0,"val":"v1","end":""},{"old":"/api/v1/wallets/deposit","type":0,"val":"wallets","end":""},{"old":"/api/v1/wallets/deposit","type":0,"val":"deposit","end":""}],
+    types: placeholder as Registry['wallets.wallets.deposit']['types'],
+  },
   'wallets.wallets.transfer': {
     methods: ["POST"],
     pattern: '/api/v1/wallets/transfer',

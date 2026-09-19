@@ -19,6 +19,7 @@ export interface ApiDefinition {
   wallets: {
     wallets: {
       index: typeof routes['wallets.wallets.index']
+      deposit: typeof routes['wallets.wallets.deposit']
       transfer: typeof routes['wallets.wallets.transfer']
       single: typeof routes['wallets.wallets.single']
     }

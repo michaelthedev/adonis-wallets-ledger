@@ -1,10 +1,11 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ApiController from "#controllers/api/api_controller";
 
-import {transferValidator} from "#validators/wallet";
+import {depositValidator, transferValidator} from "#validators/wallet";
 import {inject} from "@adonisjs/core";
 import WalletService from "#services/wallet_service";
 import TransferService from "#services/transfer_service";
+import {DepositService} from "../../services/deposit_service";
 
 export default class WalletsController extends ApiController {
   @inject()
@@ -30,6 +31,24 @@ export default class WalletsController extends ApiController {
       message: 'success',
       data: wallet
     })
+  }
+
+  @inject()
+  async deposit({ request }: HttpContext, depositService: DepositService) {
+    const user = this.getUser();
+    const payload = await request.validateUsing(depositValidator);
+
+    const res = await depositService.init();
+    return this.response({
+      status: 201,
+      message: 'Deposit successful',
+      data: {
+        userId: user.id,
+        receiver: payload.receiver,
+        amount: payload.amount,
+        currency: payload.currency
+      }
+    });
   }
 
   @inject()

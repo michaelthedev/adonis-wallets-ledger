@@ -67,6 +67,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['index']>>>
     }
   }
+  'wallets.wallets.deposit': {
+    methods: ["POST"]
+    pattern: '/api/v1/wallets/deposit'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/wallet').depositValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/wallet').depositValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['deposit']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['deposit']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'wallets.wallets.transfer': {
     methods: ["POST"]
     pattern: '/api/v1/wallets/transfer'
