@@ -6,17 +6,17 @@ import type { ApiDefinition } from './tree.d.ts'
 const placeholder: any = {}
 
 const routes = {
-  'auth.auth.login': {
+  'auth.login': {
     methods: ["POST"],
     pattern: '/api/v1/auth/login',
     tokens: [{"old":"/api/v1/auth/login","type":0,"val":"api","end":""},{"old":"/api/v1/auth/login","type":0,"val":"v1","end":""},{"old":"/api/v1/auth/login","type":0,"val":"auth","end":""},{"old":"/api/v1/auth/login","type":0,"val":"login","end":""}],
-    types: placeholder as Registry['auth.auth.login']['types'],
+    types: placeholder as Registry['auth.login']['types'],
   },
-  'auth.auth.register': {
+  'auth.register': {
     methods: ["POST"],
     pattern: '/api/v1/auth/register',
     tokens: [{"old":"/api/v1/auth/register","type":0,"val":"api","end":""},{"old":"/api/v1/auth/register","type":0,"val":"v1","end":""},{"old":"/api/v1/auth/register","type":0,"val":"auth","end":""},{"old":"/api/v1/auth/register","type":0,"val":"register","end":""}],
-    types: placeholder as Registry['auth.auth.register']['types'],
+    types: placeholder as Registry['auth.register']['types'],
   },
   'profile.profile.show': {
     methods: ["GET","HEAD"],
@@ -30,29 +30,29 @@ const routes = {
     tokens: [{"old":"/api/v1/account/logout","type":0,"val":"api","end":""},{"old":"/api/v1/account/logout","type":0,"val":"v1","end":""},{"old":"/api/v1/account/logout","type":0,"val":"account","end":""},{"old":"/api/v1/account/logout","type":0,"val":"logout","end":""}],
     types: placeholder as Registry['profile.auth.logout']['types'],
   },
-  'wallets.wallets.index': {
+  'wallets.index': {
     methods: ["GET","HEAD"],
     pattern: '/api/v1/wallets',
     tokens: [{"old":"/api/v1/wallets","type":0,"val":"api","end":""},{"old":"/api/v1/wallets","type":0,"val":"v1","end":""},{"old":"/api/v1/wallets","type":0,"val":"wallets","end":""}],
-    types: placeholder as Registry['wallets.wallets.index']['types'],
+    types: placeholder as Registry['wallets.index']['types'],
   },
-  'wallets.wallets.deposit': {
+  'wallets.deposit': {
     methods: ["POST"],
     pattern: '/api/v1/wallets/deposit',
     tokens: [{"old":"/api/v1/wallets/deposit","type":0,"val":"api","end":""},{"old":"/api/v1/wallets/deposit","type":0,"val":"v1","end":""},{"old":"/api/v1/wallets/deposit","type":0,"val":"wallets","end":""},{"old":"/api/v1/wallets/deposit","type":0,"val":"deposit","end":""}],
-    types: placeholder as Registry['wallets.wallets.deposit']['types'],
+    types: placeholder as Registry['wallets.deposit']['types'],
   },
-  'wallets.wallets.transfer': {
+  'wallets.transfer': {
     methods: ["POST"],
     pattern: '/api/v1/wallets/transfer',
     tokens: [{"old":"/api/v1/wallets/transfer","type":0,"val":"api","end":""},{"old":"/api/v1/wallets/transfer","type":0,"val":"v1","end":""},{"old":"/api/v1/wallets/transfer","type":0,"val":"wallets","end":""},{"old":"/api/v1/wallets/transfer","type":0,"val":"transfer","end":""}],
-    types: placeholder as Registry['wallets.wallets.transfer']['types'],
+    types: placeholder as Registry['wallets.transfer']['types'],
   },
-  'wallets.wallets.single': {
+  'wallets.single': {
     methods: ["GET","HEAD"],
     pattern: '/api/v1/wallets/:id',
     tokens: [{"old":"/api/v1/wallets/:id","type":0,"val":"api","end":""},{"old":"/api/v1/wallets/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/wallets/:id","type":0,"val":"wallets","end":""},{"old":"/api/v1/wallets/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['wallets.wallets.single']['types'],
+    types: placeholder as Registry['wallets.single']['types'],
   },
 } as const satisfies Record<string, AdonisEndpoint>
 

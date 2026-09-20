@@ -7,7 +7,7 @@ import type { InferInput, SimpleError } from '@vinejs/vine/types'
 export type ParamValue = string | number | bigint | boolean
 
 export interface Registry {
-  'auth.auth.login': {
+  'auth.login': {
     methods: ["POST"]
     pattern: '/api/v1/auth/login'
     types: {
@@ -19,7 +19,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['login']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'auth.auth.register': {
+  'auth.register': {
     methods: ["POST"]
     pattern: '/api/v1/auth/register'
     types: {
@@ -55,7 +55,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['logout']>>>
     }
   }
-  'wallets.wallets.index': {
+  'wallets.index': {
     methods: ["GET","HEAD"]
     pattern: '/api/v1/wallets'
     types: {
@@ -67,7 +67,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['index']>>>
     }
   }
-  'wallets.wallets.deposit': {
+  'wallets.deposit': {
     methods: ["POST"]
     pattern: '/api/v1/wallets/deposit'
     types: {
@@ -79,7 +79,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['deposit']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'wallets.wallets.transfer': {
+  'wallets.transfer': {
     methods: ["POST"]
     pattern: '/api/v1/wallets/transfer'
     types: {
@@ -91,7 +91,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['transfer']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'wallets.wallets.single': {
+  'wallets.single': {
     methods: ["GET","HEAD"]
     pattern: '/api/v1/wallets/:id'
     types: {

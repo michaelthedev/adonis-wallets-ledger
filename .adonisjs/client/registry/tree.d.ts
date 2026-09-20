@@ -3,10 +3,8 @@ import type { routes } from './index.ts'
 
 export interface ApiDefinition {
   auth: {
-    auth: {
-      login: typeof routes['auth.auth.login']
-      register: typeof routes['auth.auth.register']
-    }
+    login: typeof routes['auth.login']
+    register: typeof routes['auth.register']
   }
   profile: {
     profile: {
@@ -17,11 +15,9 @@ export interface ApiDefinition {
     }
   }
   wallets: {
-    wallets: {
-      index: typeof routes['wallets.wallets.index']
-      deposit: typeof routes['wallets.wallets.deposit']
-      transfer: typeof routes['wallets.wallets.transfer']
-      single: typeof routes['wallets.wallets.single']
-    }
+    index: typeof routes['wallets.index']
+    deposit: typeof routes['wallets.deposit']
+    transfer: typeof routes['wallets.transfer']
+    single: typeof routes['wallets.single']
   }
 }
