@@ -45,7 +45,7 @@ export default class WalletService {
     const wallets = await Wallet.query()
       .where('user_id', userId)
       .withAggregate('ledgerEntries', (q) =>
-        q.sum(db.raw(`CASE WHEN direction = 'credit' THEN amount ELSE -amount END`)).as('balance')
+        q.sum(db.knexRawQuery(`CASE WHEN direction = 'credit' THEN amount ELSE -amount END`)).as('balance')
       )
 
     return wallets.map((wallet) => ({
