@@ -1,14 +1,13 @@
 // import User from "#models/user";
-import Wallet from "#models/wallet";
-import type {TransactionClientContract} from "@adonisjs/lucid/types/database";
-import db from "@adonisjs/lucid/services/db";
+import Wallet from '#models/wallet'
+import type { TransactionClientContract } from '@adonisjs/lucid/types/database'
+import db from '@adonisjs/lucid/services/db'
+import { DEFAULT_CURRENCIES } from '../constants/currencies.js'
 
 export default class WalletService {
   async createDefault(userId: number, trx?: TransactionClientContract) {
-    const defaultCurrencies = ['NGN', 'USD'];
-
-    for (const currency of defaultCurrencies) {
-      await Wallet.create({userId, currency}, trx ? { client: trx } : undefined)
+    for (const currency of DEFAULT_CURRENCIES) {
+      await Wallet.create({ userId, currency }, trx ? { client: trx } : undefined)
     }
   }
 
