@@ -20,12 +20,14 @@ router.group(() => {
       router.post('logout', [controllers.api.Auth, 'logout'])
     }).prefix('account').as('profile')
 
+    /** Wallet **/
     router.group(() => {
       router.get('/', [controllers.api.Wallets, 'index'])
       router.post('/deposit', [controllers.api.Wallets, 'deposit'])
       router.post('/transfer', [controllers.api.Wallets, 'transfer'])
       router.get('/:id', [controllers.api.Wallets, 'single']).where('id', /^[0-9]+$/)
     }).prefix('wallets')
+
   }).use(middleware.auth())
 
 }).prefix('/api/v1')

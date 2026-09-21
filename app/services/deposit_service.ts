@@ -1,3 +1,7 @@
+import User from '#models/user'
+
 export class DepositService {
-  // Your code here
+  async function init(user: User, amount: number) {
+
+  }
 }
