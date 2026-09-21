@@ -7,14 +7,11 @@ import {DateTime} from "luxon";
 import type {TransactionClientContract} from "@adonisjs/lucid/types/database";
 import {inject} from "@adonisjs/core";
 import WalletService from "#services/wallet_service";
+import InsufficientBalanceException from '#exceptions/insufficient_balance_exception'
 
 @inject()
 export default class TransferService {
-  private walletService: WalletService;
-
-  constructor(walletService: WalletService) {
-    this.walletService = walletService
-  }
+  constructor(private walletService: WalletService) {}
 
   async init(
     senderUserId: number,
@@ -54,7 +51,7 @@ export default class TransferService {
     trx: TransactionClientContract
   ) {
     const senderBalance = await sender.balance(trx)
-    if (senderBalance < amount) throw new Error('Insufficient balance')
+    if (senderBalance < amount) throw new InsufficientBalanceException
 
     const transaction = await Transaction.create({
       type: 'transfer',

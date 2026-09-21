@@ -59,19 +59,12 @@ export default class WalletsController extends ApiController {
     const user = this.getUser();
     const payload = await request.validateUsing(transferValidator);
 
-    try {
-      const result = await transferService.init(user.id, payload.receiver, payload.amount, payload.currency);
+    const result = await transferService.init(user.id, payload.receiver, payload.amount, payload.currency);
 
-      return this.response({
-        status: 201,
-        message: 'Transfer successful',
-        data: result
-      });
-    } catch (error: any) {
-      return this.response({
-        status: 400,
-        message: error.message || 'Transfer failed',
-      });
-    }
+    return this.response({
+      status: 201,
+      message: 'Transfer successful',
+      data: result
+    });
   }
 }
