@@ -8,6 +8,7 @@ import type {TransactionClientContract} from "@adonisjs/lucid/types/database";
 import {inject} from "@adonisjs/core";
 import WalletService from "#services/wallet_service";
 import InsufficientBalanceException from '#exceptions/insufficient_balance_exception'
+import WalletTransferException from '#exceptions/wallet_transfer_exception'
 
 @inject()
 export default class TransferService {
@@ -33,7 +34,7 @@ export default class TransferService {
 
       // block same user
       if (senderUserId === receiverUser.id) {
-        throw new Error('You cannot transfer to yourself')
+        throw new WalletTransferException('You cannot transfer to yourself')
       }
 
       let receiverWallet = await this.walletService
