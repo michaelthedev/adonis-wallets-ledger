@@ -6,7 +6,7 @@ const dbConfig = defineConfig({
   /**
    * Default connection used for all queries.
    */
-  connection: 'mysql',
+  connection: env.get('DB_CONNECTION', 'mysql'),
 
   connections: {
     /**

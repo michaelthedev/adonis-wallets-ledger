@@ -23,6 +23,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   APP_URL: Env.schema.string({ format: 'url', tld: false }),
 
   // Database
+  DB_CONNECTION: Env.schema.enum(['mysql', 'sqlite']),
   DB_PORT: Env.schema.number(), // prevent string->number type error
 
   // Session
