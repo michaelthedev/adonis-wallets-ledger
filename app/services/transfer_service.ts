@@ -78,10 +78,30 @@ export default class TransferService {
       },
     ], { client: trx })
 
+    await this.assertBalanced(transaction.id, trx)
+
     transaction.status = 'completed'
     transaction.completedAt = DateTime.now()
     await transaction.save()
 
     return transaction
+  }
+
+  private async assertBalanced(transactionId: number, trx: TransactionClientContract) {
+    const rows = await LedgerEntry.query({ client: trx })
+      .where('transaction_id', transactionId)
+      .groupBy('currency')
+      .select('currency')
+      .select(
+        db.knexRawQuery(`SUM(CASE WHEN direction = 'credit' THEN amount ELSE -amount END) as net`)
+      )
+
+    for (const row of rows) {
+      if (Number(row.$extras.net) !== 0) {
+        throw new Error(
+          `Ledger entries for transaction ${transactionId} do not net to zero in ${row.currency}`
+        )
+      }
+    }
   }
 }
