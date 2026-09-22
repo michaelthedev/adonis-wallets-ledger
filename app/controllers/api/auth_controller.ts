@@ -7,6 +7,7 @@ import ApiController from "#controllers/api/api_controller";
 import {AccessToken} from "@adonisjs/auth/access_tokens";
 import WalletService from "#services/wallet_service";
 import {inject} from "@adonisjs/core";
+import db from '@adonisjs/lucid/services/db'
 
 
 export default class AuthController extends ApiController {
@@ -28,17 +29,24 @@ export default class AuthController extends ApiController {
   async register({ request }: HttpContext, walletService: WalletService) {
     const { firstName, lastName, email, password } = await request.validateUsing(signupValidator)
 
-    const user = await User.create({ firstName, lastName, email, password })
-    const token = await User.accessTokens.create(user, ['*'], {
-      expiresIn: '7 days'
+
+    return db.transaction(async (trx) => {
+      const user = await User.create(
+        { firstName, lastName, email, password },
+        { client: trx}
+      )
+
+      await walletService.createDefault(user.id, trx)
+
+      const token = await User.accessTokens.create(user, ['*'], {
+        expiresIn: '7 days'
+      })
+
+      return this.response('success', {
+        ...this.tokenResponse(token),
+        user: UserTransformer.transform(user),
+      }, 201)
     })
-
-    await walletService.createDefault(user.id)
-
-    return this.response('success', {
-      ...this.tokenResponse(token),
-      user: UserTransformer.transform(user),
-    }, 201)
   }
 
   async logout({ auth }: HttpContext) {
