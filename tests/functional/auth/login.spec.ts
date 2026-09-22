@@ -42,9 +42,9 @@ test.group('Auth login', (group) => {
 
     response.assertStatus(200)
 
-    const body = response.body();
-    assert.notEmpty(body.data.token)
-    assert.isObject(body.data.user)
-    assert.equal(body.data.user.email, user.email)
+    const body = response.body()
+    assert.notEmpty(body.data?.token)
+    assert.isObject(body.data?.user)
+    assert.equal(body.data?.user.email, user.email)
   })
 })
