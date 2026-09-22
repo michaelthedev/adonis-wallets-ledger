@@ -26,6 +26,7 @@ export default class WalletService {
         return await Wallet.query(opts ?? {})
           .where('user_id', userId)
           .where('currency', currency)
+          .forUpdate() // prevent old snapshot
           .firstOrFail()
       }
 
