@@ -30,7 +30,9 @@ export default class TransferService {
       //@todo: change to like username so this wont be used to confirm an email exists
       const receiverUser = await User.query({ client: trx })
         .where('email', receiver)
-        .firstOrFail()
+        .first()
+
+      if (! receiverUser) throw new WalletTransferException('Invalid receiver selected')
 
       // block same user
       if (senderUserId === receiverUser.id) {
