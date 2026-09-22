@@ -59,7 +59,7 @@ export default class WalletsController extends ApiController {
     const result = await transferService.init(user.id, payload.receiver, payload.amount, payload.currency);
 
     return this.response({
-      status: 201,
+      status: 200,
       message: 'Transfer successful',
       data: result
     });
