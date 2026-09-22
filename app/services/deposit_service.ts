@@ -11,7 +11,7 @@ export class DepositService {
   constructor(private walletService: WalletService) {}
 
   async init(userId: number, amount: number, currency: string) {
-    if (! app.inDev) throw new Error("This is a demo project, do not use in production")
+    if (app.inProduction) throw new Error("This is a demo project, do not use in production")
 
     return db.transaction(async (trx) => {
       const wallet = await this.walletService.findOrCreate(userId, currency, trx);
