@@ -1,50 +1,25 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import User from '#models/user'
+import { createUser, createWallet } from '#tests/helpers/index'
 
 test.group('Wallets -> deposit', (group) => {
-  group.each.setup(() => {
-    return testUtils.db().truncate()
-  })
+  group.each.setup(() => testUtils.db().truncate())
 
-  test('return error when invalid values are provided', async ({ client }) => {
-    const response = await client.visit('wallets.deposit')
+  test('deposit fund into wallet', async ({ client, assert }) => {
+    const user = await createUser()
+    const wallet = await createWallet(user, 'USD')
 
-    response.assertStatus(422)
-    response.assertBodyContains({
-      errors: [
-        {
-          field: 'email',
-          message: 'The email field must be defined',
-          rule: 'required',
-        },
-        {
-          field: 'password',
-          message: 'The password field must be defined',
-          rule: 'required',
-        },
-      ],
-    })
-  })
-
-  test('login user account', async ({ client, assert }) => {
-    const user = await User.create({
-      firstName: 'John',
-      lastName: 'John',
-      email: 'john@test.com',
-      password: 'secret',
-    })
-
-    const response = await client.visit('auth.login').json({
-      email: 'john@test.com',
-      password: 'secret',
-    })
+    const response = await client
+      .visit('wallets.deposit')
+      .loginAs(user)
+      .json({
+        amount: 500,
+        currency: 'USD'
+      })
 
     response.assertStatus(200)
 
-    const body = response.body()
-    assert.notEmpty(body.data.token)
-    assert.isObject(body.data.user)
-    assert.equal(body.data.user.email, user.email)
+    const balance = await wallet.balance()
+    assert.equal(balance, 500)
   })
 })
