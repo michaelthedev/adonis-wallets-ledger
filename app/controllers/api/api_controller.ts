@@ -11,13 +11,15 @@ export default class ApiController {
   }
 
   /**
-   * Usage:
-   * ```ts
+   * @example
    * return this.response('Success', { user: user }, 200) // OR
-   * return this.response({ message: 'Success', data: { user: user }, status: 200 })
-   * ```
+   * return this.response({ message: 'Success', data: { user }, status: 200 })
    */
-  protected async response(message: string|Record<string, any> = 'success', data: any = null, status: number = 200) {
+  protected async response(
+    message: string|Record<string, any> = 'success',
+    data: any = null,
+    status: number = 200
+  ) {
     const response = this.ctx.response;
     response.removeHeader('X-Powered-By') // example
 

@@ -61,7 +61,7 @@ test.group('Auth signup', (group) => {
     })
 
     const body = response.body();
-    const user = await User.findOrFail(body.data.user.id)
+    const user = await User.findOrFail(body.data?.user.id)
     assert.equal(user.email, 'john@test.com')
   })
 })
