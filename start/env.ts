@@ -24,7 +24,7 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   // Database
   DB_CONNECTION: Env.schema.enum(['mysql', 'sqlite'] as const),
-  DB_PORT: Env.schema.number(), // prevent string->number type error
+  DB_PORT: Env.schema.number.optional(), // prevent string->number type error
 
   // Session
   SESSION_DRIVER: Env.schema.enum(['cookie', 'memory', 'database'] as const),
