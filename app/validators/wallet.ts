@@ -5,7 +5,7 @@ const amountRule = () => vine.number().positive().withoutDecimals()
 
 export const transferValidator = vine.create({
   amount: amountRule(),
-  currency: vine.string(),
+  currency: vine.enum(SUPPORTED_CURRENCIES),
   receiver: vine.string(), // email for now
 })
 

@@ -6,7 +6,7 @@ export default class InsufficientBalanceException extends Exception {
 
   handle(error: this, { response }: HttpContext) {
     return response
-      .status(error.constructor.status)
+      .status(error.status)
       .json({
         success: false,
         message: 'Insufficient wallet balance',
