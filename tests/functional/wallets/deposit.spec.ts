@@ -1,5 +1,4 @@
 import { test } from '@japa/runner'
-import testUtils from '@adonisjs/core/services/test_utils'
 import { createUser, createWallet } from '#tests/helpers/index'
 import LedgerEntry from '#models/ledger_entry'
 
@@ -53,6 +52,7 @@ test.group('Wallets -> deposit', () => {
       .loginAs(user)
       .json({
         amount: 10,
+        // @ts-ignore
         currency: 'XYZ'
       })
 
