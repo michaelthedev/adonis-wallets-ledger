@@ -61,7 +61,7 @@ export default class WalletsController extends ApiController {
     return this.response({
       status: 200,
       message: 'Transfer successful',
-      data: result
+      data: result.serialize()
     });
   }
 }
