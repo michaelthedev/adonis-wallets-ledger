@@ -28,6 +28,26 @@ test.group('Wallets -> transfer', (group) => {
     })
   })
 
+  test('fails on self transfer', async ({ client }) => {
+    const { user: sender } = await createUserWithBalance(100, 'USD')
+
+    const response = await client
+      .visit('wallets.transfer')
+      .loginAs(sender)
+      .json({
+        receiver: sender.email,
+        amount: 300,
+        currency: 'USD',
+      })
+
+    response.assertStatus(400)
+
+    response.assertBodyContains({
+      success: false,
+      message: 'You cannot transfer to yourself'
+    })
+  })
+
   test('transfer between users', async ({ client, assert }) => {
     const { user: sender, wallet: senderWallet } = await createUserWithBalance(1000, 'USD')
     const receiver = await createUser({}, { withWallets: true })
