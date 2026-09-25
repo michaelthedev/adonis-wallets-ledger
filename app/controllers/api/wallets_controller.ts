@@ -6,6 +6,7 @@ import {inject} from "@adonisjs/core";
 import WalletService from "#services/wallet_service";
 import TransferService from "#services/transfer_service";
 import {DepositService} from "#services/deposit_service";
+import TransactionTransformer from '#transformers/transaction_transformer'
 
 export default class WalletsController extends ApiController {
   @inject()
@@ -43,7 +44,7 @@ export default class WalletsController extends ApiController {
       status: 200,
       message: 'Deposit successful',
       data: {
-        transaction: result
+        transaction: TransactionTransformer.transform(result)
       }
     });
   }
@@ -61,7 +62,7 @@ export default class WalletsController extends ApiController {
     return this.response({
       status: 200,
       message: 'Transfer successful',
-      data: result.serialize()
+      data: TransactionTransformer.transform(result)
     });
   }
 }
