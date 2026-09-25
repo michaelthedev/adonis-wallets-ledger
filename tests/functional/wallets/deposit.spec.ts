@@ -2,7 +2,11 @@ import { test } from '@japa/runner'
 import { createUser, createWallet } from '#tests/helpers/index'
 import LedgerEntry from '#models/ledger_entry'
 
-test.group('Wallets -> deposit', () => {
+import testUtils from '@adonisjs/core/services/test_utils'
+
+test.group('Wallets -> deposit', (group) => {
+  group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
+
   test('deposit fund into wallet', async ({ client, assert }) => {
     const user = await createUser()
     const wallet = await createWallet(user, 'USD')

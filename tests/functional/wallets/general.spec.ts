@@ -1,7 +1,10 @@
 import { test } from '@japa/runner'
+import testUtils from '@adonisjs/core/services/test_utils'
 import { createUser } from '#tests/helpers/index'
 
-test.group('Wallets -> index', () => {
+test.group('Wallets -> index', (group) => {
+  group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
+
   test('list wallets for user', async ({ client, assert }) => {
     const user = await createUser({}, { withWallets: true })
 
