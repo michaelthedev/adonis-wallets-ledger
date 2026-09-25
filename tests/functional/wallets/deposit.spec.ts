@@ -29,7 +29,7 @@ test.group('Wallets -> deposit', () => {
     assert.equal(depositEntry?.amount, 500)
   })
 
-  test('deposit fails on invalid amount', async ({ client }) => {
+  test('deposit fails on negative amount', async ({ client }) => {
     const user = await createUser()
 
     const response = await client
@@ -41,7 +41,58 @@ test.group('Wallets -> deposit', () => {
       })
 
     response.assertStatus(422)
-    // response.assertBodyContains();
+    response.assertBodyContains({
+      errors: [
+        {
+          field: 'amount',
+          rule: 'positive',
+        },
+      ],
+    })
+  })
+
+  test('deposit fails on zero amount', async ({ client }) => {
+    const user = await createUser()
+
+    const response = await client
+      .visit('wallets.deposit')
+      .loginAs(user)
+      .json({
+        amount: 0,
+        currency: 'USD'
+      })
+
+    response.assertStatus(422)
+    response.assertBodyContains({
+      errors: [
+        {
+          field: 'amount',
+          rule: 'positive',
+        },
+      ],
+    })
+  })
+
+  test('deposit fails on decimal amount', async ({ client }) => {
+    const user = await createUser()
+
+    const response = await client
+      .visit('wallets.deposit')
+      .loginAs(user)
+      .json({
+        amount: 10.5,
+        currency: 'USD'
+      })
+
+    response.assertStatus(422)
+    response.assertBodyContains({
+      errors: [
+        {
+          field: 'amount',
+          rule: 'withoutDecimals',
+        },
+      ],
+    })
   })
 
   test('deposit fails on invalid currency', async ({ client }) => {
