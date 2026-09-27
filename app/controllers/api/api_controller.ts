@@ -30,7 +30,6 @@ export default class ApiController {
       message = message.message || 'success'
     }
 
-    //@todo: fix serialize not working
     const payload =
       data === null
         ? null
