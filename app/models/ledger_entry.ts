@@ -1,5 +1,5 @@
 import { LedgerEntrySchema } from '#database/schema'
-import {belongsTo} from "@adonisjs/lucid/orm";
+import {beforeDelete, beforeUpdate, belongsTo} from "@adonisjs/lucid/orm";
 import Wallet from "#models/wallet";
 import Transaction from "#models/transaction";
 import type { BelongsTo } from "@adonisjs/lucid/types/relations";
@@ -10,4 +10,14 @@ export default class LedgerEntry extends LedgerEntrySchema {
 
   @belongsTo(() => Transaction)
   declare transaction: BelongsTo<typeof Transaction>
+
+  @beforeUpdate()
+  static preventUpdate() {
+    throw new Error('Ledger entries are append-only')
+  }
+
+  @beforeDelete()
+  static preventDelete() {
+    throw new Error('Ledger entries are append-only')
+  }
 }
