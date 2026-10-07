@@ -18,7 +18,7 @@ router.group(() => {
     router.group(() => {
       router.get('profile', [controllers.Profile, 'show'])
       router.post('logout', [controllers.api.Auth, 'logout'])
-    }).prefix('account').as('profile')
+    }).prefix('account')
 
     /** Wallet **/
     router.group(() => {

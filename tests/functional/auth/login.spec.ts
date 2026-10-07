@@ -27,7 +27,7 @@ test.group('Auth login', (group) => {
     })
   })
 
-  test('login user account', async ({ client, assert }) => {
+  test('login and logout user account', async ({ client, assert }) => {
     const user = await User.create({
       firstName: 'John',
       lastName: 'John',
@@ -46,5 +46,16 @@ test.group('Auth login', (group) => {
     assert.notEmpty(body.data?.token)
     assert.isObject(body.data?.user)
     assert.equal(body.data?.user.email, user.email)
+
+    // logout
+    const logoutResponse = await client.visit('auth.logout').bearerToken(body.data?.token)
+
+    logoutResponse.assertStatus(200)
+
+    // confirm the token has been revoked
+    const profileResponse = await client.visit('profile.show').bearerToken(body.data?.token)
+
+    profileResponse.dumpBody()
+    profileResponse.assertStatus(401)
   })
 })
