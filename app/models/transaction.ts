@@ -2,13 +2,13 @@ import { TransactionSchema } from '#database/schema'
 import {beforeCreate, hasMany} from "@adonisjs/lucid/orm";
 import type {HasMany} from "@adonisjs/lucid/types/relations";
 import LedgerEntry from "#models/ledger_entry";
-import {DateTime} from "luxon";
 import {TransactionStatus, TransactionType} from "#constants/transactions";
+import {randomUUID} from "node:crypto";
 
 export default class Transaction extends TransactionSchema {
   @beforeCreate()
   static assignUid(transaction: Transaction) {
-    transaction.uid ??= DateTime.now().toFormat('yyMMddHHss')+Math.floor(Math.random() * 10000).toString().padStart(4, '0')
+    transaction.uid ??= randomUUID()
   }
 
   @hasMany(() => LedgerEntry)
