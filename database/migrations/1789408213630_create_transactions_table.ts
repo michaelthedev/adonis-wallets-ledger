@@ -8,8 +8,8 @@ export default class extends BaseSchema {
       table.increments('id')
 
       table.string('uid').notNullable().unique();
-      table.enum('type', ['transfer', 'deposit', 'withdrawal']).notNullable();
-      table.enum('status', ['pending', 'completed', 'failed', 'reversed']).notNullable();
+      table.string('type').notNullable();
+      table.string('status').notNullable();
       table.string('idempotency_key').nullable().unique()
 
       table.timestamp('created_at')

@@ -3,6 +3,7 @@ import {beforeCreate, hasMany} from "@adonisjs/lucid/orm";
 import type {HasMany} from "@adonisjs/lucid/types/relations";
 import LedgerEntry from "#models/ledger_entry";
 import {DateTime} from "luxon";
+import {TransactionStatus, TransactionType} from "#constants/transactions";
 
 export default class Transaction extends TransactionSchema {
   @beforeCreate()
@@ -12,4 +13,7 @@ export default class Transaction extends TransactionSchema {
 
   @hasMany(() => LedgerEntry)
   declare ledgerEntries: HasMany<typeof LedgerEntry>
+
+  declare type: TransactionType
+  declare status: TransactionStatus
 }
