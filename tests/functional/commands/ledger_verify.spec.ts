@@ -5,6 +5,7 @@ import LedgerVerify from '#commands/ledger_verify'
 import Transaction from '#models/transaction'
 import LedgerEntry from '#models/ledger_entry'
 import { createUser, createWallet, createUserWithBalance } from '#tests/helpers/index'
+import {DateTime} from "luxon";
 
 test.group('Commands -> ledger:verify', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
@@ -43,6 +44,29 @@ test.group('Commands -> ledger:verify', (group) => {
     assert.equal(command.exitCode, 1)
   })
 
+  test('fails C2 when wallet with a negative balance', async ({ assert }) => {
+    const user = await createUser()
+    const wallet = await createWallet(user, 'USD')
+
+    const tx = await Transaction.create({
+      type: 'withdrawal',
+      status: 'completed',
+    })
+
+    await LedgerEntry.create({
+      transactionId: tx.id,
+      walletId: wallet.id,
+      amount: 100,
+      currency: 'USD',
+      direction: 'debit',
+    })
+
+    const command = await ace.create(LedgerVerify, [])
+    await command.exec()
+
+    assert.equal(command.exitCode, 1)
+  })
+
   test('fails C3 when entry currency does not match wallet currency', async ({ assert }) => {
     const user = await createUser()
     const wallet = await createWallet(user, 'USD')
@@ -70,6 +94,19 @@ test.group('Commands -> ledger:verify', (group) => {
     await Transaction.create({
       type: 'transfer',
       status: 'completed',
+    })
+
+    const command = await ace.create(LedgerVerify, [])
+    await command.exec()
+
+    assert.equal(command.exitCode, 1)
+  })
+
+  test('fails C5 when a transaction stuck in pending for > 5 minutes', async ({ assert }) => {
+    await Transaction.create({
+      type: 'transfer',
+      status: 'pending',
+      createdAt: DateTime.now().minus({ minutes: 6 })
     })
 
     const command = await ace.create(LedgerVerify, [])
