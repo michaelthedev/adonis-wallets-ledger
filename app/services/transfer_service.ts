@@ -25,7 +25,9 @@ export default class TransferService {
         .where('user_id', senderUserId)
         .where('currency', currency)
         .forUpdate()
-        .firstOrFail()
+        .first()
+
+      if (! senderWallet) throw new WalletTransferException(`sender does not have a ${currency} wallet`)
 
       //@todo: change to like username so this wont be used to confirm an email exists
       const receiverUser = await User.query({ client: trx })
