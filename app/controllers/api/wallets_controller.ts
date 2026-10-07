@@ -23,7 +23,7 @@ export default class WalletsController extends ApiController {
 
     if (! wallet) {
       return this.response({
-        status: 400,
+        status: 404,
         message: 'Invalid wallet selected',
       });
     }
