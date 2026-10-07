@@ -19,7 +19,7 @@ export default class WalletService {
       .first()
 
     try {
-      return existing ?? await Wallet.create({userId, currency}, opts)
+      return existing ?? (await Wallet.create({ userId, currency }, opts))
     } catch (e: any) {
       if (e.code === 'ER_DUP_ENTRY') {
         return await Wallet.query(opts ?? {})
@@ -45,13 +45,15 @@ export default class WalletService {
     const wallets = await Wallet.query()
       .where('user_id', userId)
       .withAggregate('ledgerEntries', (q) =>
-        q.sum(db.knexRawQuery(`CASE WHEN direction = 'credit' THEN amount ELSE -amount END`)).as('balance')
+        q
+          .sum(db.knexRawQuery(`CASE WHEN direction = 'credit' THEN amount ELSE -amount END`))
+          .as('balance')
       )
 
     return wallets.map((wallet) => ({
       id: wallet.id,
       currency: wallet.currency,
       balance: Number(wallet.$extras.balance ?? 0),
-    }));
+    }))
   }
 }

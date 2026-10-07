@@ -1,14 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import {loginValidator, signupValidator} from "#validators/user";
+import { loginValidator, signupValidator } from '#validators/user'
 
-import User from "#models/user";
-import UserTransformer from "#transformers/user_transformer";
-import ApiController from "#controllers/api/api_controller";
-import {AccessToken} from "@adonisjs/auth/access_tokens";
-import WalletService from "#services/wallet_service";
-import {inject} from "@adonisjs/core";
+import User from '#models/user'
+import UserTransformer from '#transformers/user_transformer'
+import ApiController from '#controllers/api/api_controller'
+import { AccessToken } from '@adonisjs/auth/access_tokens'
+import WalletService from '#services/wallet_service'
+import { inject } from '@adonisjs/core'
 import db from '@adonisjs/lucid/services/db'
-
 
 export default class AuthController extends ApiController {
   async login({ request }: HttpContext) {
@@ -16,8 +15,8 @@ export default class AuthController extends ApiController {
 
     const user = await User.verifyCredentials(email, password)
     const token = await User.accessTokens.create(user, ['*'], {
-      expiresIn: '7 days'
-    });
+      expiresIn: '7 days',
+    })
 
     return this.response('success', {
       ...this.tokenResponse(token),
@@ -30,23 +29,24 @@ export default class AuthController extends ApiController {
     const { firstName, lastName, email, password } = await request.validateUsing(signupValidator)
 
     const user = await db.transaction(async (trx) => {
-      const user = await User.create(
-        { firstName, lastName, email, password },
-        { client: trx}
-      )
+      const user = await User.create({ firstName, lastName, email, password }, { client: trx })
 
       await walletService.createDefault(user.id, trx)
-      return user;
+      return user
     })
 
     const token = await User.accessTokens.create(user, ['*'], {
-      expiresIn: '7 days'
+      expiresIn: '7 days',
     })
 
-    return this.response('success', {
-      ...this.tokenResponse(token),
-      user: UserTransformer.transform(user),
-    }, 201)
+    return this.response(
+      'success',
+      {
+        ...this.tokenResponse(token),
+        user: UserTransformer.transform(user),
+      },
+      201
+    )
   }
 
   async logout({ auth }: HttpContext) {
@@ -55,7 +55,7 @@ export default class AuthController extends ApiController {
       await User.accessTokens.delete(user, user.currentAccessToken.identifier)
     }
 
-    return this.response('success');
+    return this.response('success')
   }
 
   private tokenResponse(token: AccessToken) {

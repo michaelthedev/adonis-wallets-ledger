@@ -1,12 +1,12 @@
-import db from "@adonisjs/lucid/services/db";
-import User from "#models/user";
-import Wallet from "#models/wallet";
-import Transaction from "#models/transaction";
-import LedgerEntry from "#models/ledger_entry";
-import {DateTime} from "luxon";
-import type {TransactionClientContract} from "@adonisjs/lucid/types/database";
-import {inject} from "@adonisjs/core";
-import WalletService from "#services/wallet_service";
+import db from '@adonisjs/lucid/services/db'
+import User from '#models/user'
+import Wallet from '#models/wallet'
+import Transaction from '#models/transaction'
+import LedgerEntry from '#models/ledger_entry'
+import { DateTime } from 'luxon'
+import type { TransactionClientContract } from '@adonisjs/lucid/types/database'
+import { inject } from '@adonisjs/core'
+import WalletService from '#services/wallet_service'
 import InsufficientBalanceException from '#exceptions/insufficient_balance_exception'
 import WalletTransferException from '#exceptions/wallet_transfer_exception'
 
@@ -14,12 +14,7 @@ import WalletTransferException from '#exceptions/wallet_transfer_exception'
 export default class TransferService {
   constructor(private walletService: WalletService) {}
 
-  async init(
-    senderUserId: number,
-    receiver: string,
-    amount: number,
-    currency: string
-  ) {
+  async init(senderUserId: number, receiver: string, amount: number, currency: string) {
     return db.transaction(async (trx) => {
       const senderWallet = await Wallet.query({ client: trx })
         .where('user_id', senderUserId)
@@ -27,22 +22,20 @@ export default class TransferService {
         .forUpdate()
         .first()
 
-      if (! senderWallet) throw new WalletTransferException(`sender does not have a ${currency} wallet`)
+      if (!senderWallet)
+        throw new WalletTransferException(`sender does not have a ${currency} wallet`)
 
       //@todo: change to like username so this wont be used to confirm an email exists
-      const receiverUser = await User.query({ client: trx })
-        .where('email', receiver)
-        .first()
+      const receiverUser = await User.query({ client: trx }).where('email', receiver).first()
 
-      if (! receiverUser) throw new WalletTransferException('Invalid receiver selected')
+      if (!receiverUser) throw new WalletTransferException('Invalid receiver selected')
 
       // block same user
       if (senderUserId === receiverUser.id) {
         throw new WalletTransferException('You cannot transfer to yourself')
       }
 
-      let receiverWallet = await this.walletService
-        .findOrCreate(receiverUser.id, currency, trx);
+      let receiverWallet = await this.walletService.findOrCreate(receiverUser.id, currency, trx)
 
       return this.transfer(senderWallet, receiverWallet, amount, currency, trx)
     })
@@ -56,29 +49,35 @@ export default class TransferService {
     trx: TransactionClientContract
   ) {
     const senderBalance = await sender.balance(trx)
-    if (senderBalance < amount) throw new InsufficientBalanceException
+    if (senderBalance < amount) throw new InsufficientBalanceException()
 
-    const transaction = await Transaction.create({
-      type: 'transfer',
-      status: 'pending'
-    }, { client: trx })
+    const transaction = await Transaction.create(
+      {
+        type: 'transfer',
+        status: 'pending',
+      },
+      { client: trx }
+    )
 
-    await LedgerEntry.createMany([
-      {
-        amount,
-        currency,
-        direction: 'debit',
-        walletId: sender.id,
-        transactionId: transaction.id,
-      },
-      {
-        amount,
-        currency,
-        direction: 'credit',
-        walletId: receiver.id,
-        transactionId: transaction.id,
-      },
-    ], { client: trx })
+    await LedgerEntry.createMany(
+      [
+        {
+          amount,
+          currency,
+          direction: 'debit',
+          walletId: sender.id,
+          transactionId: transaction.id,
+        },
+        {
+          amount,
+          currency,
+          direction: 'credit',
+          walletId: receiver.id,
+          transactionId: transaction.id,
+        },
+      ],
+      { client: trx }
+    )
 
     await this.assertBalanced(transaction.id, trx)
 

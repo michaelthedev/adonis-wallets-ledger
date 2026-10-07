@@ -1,6 +1,6 @@
-import { HttpContext } from '@adonisjs/core/http';
-import {inject} from "@adonisjs/core";
-import User from "#models/user";
+import { HttpContext } from '@adonisjs/core/http'
+import { inject } from '@adonisjs/core'
+import User from '#models/user'
 
 @inject()
 export default class ApiController {
@@ -16,11 +16,11 @@ export default class ApiController {
    * return this.response({ message: 'Success', data: { user }, status: 200 })
    */
   protected async response(
-    message: string|Record<string, any> = 'success',
+    message: string | Record<string, any> = 'success',
     data: any = null,
     status: number = 200
   ) {
-    const response = this.ctx.response;
+    const response = this.ctx.response
     response.removeHeader('X-Powered-By') // example
 
     // if message is a record, we can extract from it
@@ -35,7 +35,7 @@ export default class ApiController {
         ? null
         : await this.ctx.serialize.withoutWrapping(data, this.ctx.containerResolver)
 
-    response.status(status);
+    response.status(status)
     return {
       success: status < 400,
       message,

@@ -5,7 +5,7 @@ import LedgerVerify from '#commands/ledger_verify'
 import Transaction from '#models/transaction'
 import LedgerEntry from '#models/ledger_entry'
 import { createUser, createWallet, createUserWithBalance } from '#tests/helpers/index'
-import {DateTime} from "luxon";
+import { DateTime } from 'luxon'
 
 test.group('Commands -> ledger:verify', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
@@ -106,7 +106,7 @@ test.group('Commands -> ledger:verify', (group) => {
     await Transaction.create({
       type: 'transfer',
       status: 'pending',
-      createdAt: DateTime.now().minus({ minutes: 6 })
+      createdAt: DateTime.now().minus({ minutes: 6 }),
     })
 
     const command = await ace.create(LedgerVerify, [])

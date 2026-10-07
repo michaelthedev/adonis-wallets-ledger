@@ -1,4 +1,3 @@
-
 export const TRANSACTION_TYPES = ['transfer', 'deposit', 'withdrawal'] as const
 export type TransactionType = (typeof TRANSACTION_TYPES)[number]
 

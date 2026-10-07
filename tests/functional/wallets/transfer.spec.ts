@@ -13,14 +13,11 @@ test.group('Wallets -> transfer', (group) => {
     const { user: sender, wallet: senderWallet } = await createUserWithBalance(100, 'USD')
     const receiver = await createUser({}, { withWallets: true })
 
-    const response = await client
-      .visit('wallets.transfer')
-      .loginAs(sender)
-      .json({
-        receiver: receiver.email,
-        amount: 300,
-        currency: 'USD',
-      })
+    const response = await client.visit('wallets.transfer').loginAs(sender).json({
+      receiver: receiver.email,
+      amount: 300,
+      currency: 'USD',
+    })
 
     response.assertStatus(400)
     response.assertBodyContains({
@@ -40,14 +37,11 @@ test.group('Wallets -> transfer', (group) => {
   test('fails on self transfer', async ({ client }) => {
     const { user: sender } = await createUserWithBalance(100, 'USD')
 
-    const response = await client
-      .visit('wallets.transfer')
-      .loginAs(sender)
-      .json({
-        receiver: sender.email,
-        amount: 300,
-        currency: 'USD',
-      })
+    const response = await client.visit('wallets.transfer').loginAs(sender).json({
+      receiver: sender.email,
+      amount: 300,
+      currency: 'USD',
+    })
 
     response.assertStatus(400)
     response.assertBodyContains({
@@ -60,14 +54,11 @@ test.group('Wallets -> transfer', (group) => {
     const { user: sender, wallet: senderWallet } = await createUserWithBalance(500, 'USD')
     const receiver = await createUser()
 
-    const response = await client
-      .visit('wallets.transfer')
-      .loginAs(sender)
-      .json({
-        receiver: receiver.email,
-        amount: 200,
-        currency: 'USD',
-      })
+    const response = await client.visit('wallets.transfer').loginAs(sender).json({
+      receiver: receiver.email,
+      amount: 200,
+      currency: 'USD',
+    })
 
     response.assertStatus(200)
 
@@ -83,14 +74,11 @@ test.group('Wallets -> transfer', (group) => {
   test('fails when receiver does not exist', async ({ client }) => {
     const { user: sender } = await createUserWithBalance(500, 'USD')
 
-    const response = await client
-      .visit('wallets.transfer')
-      .loginAs(sender)
-      .json({
-        receiver: 'nonexistent@example.com',
-        amount: 100,
-        currency: 'USD',
-      })
+    const response = await client.visit('wallets.transfer').loginAs(sender).json({
+      receiver: 'nonexistent@example.com',
+      amount: 100,
+      currency: 'USD',
+    })
 
     response.assertStatus(400)
     response.assertBodyContains({
@@ -100,13 +88,11 @@ test.group('Wallets -> transfer', (group) => {
   })
 
   test('fails on missing token', async ({ client }) => {
-    const response = await client
-      .visit('wallets.transfer')
-      .json({
-        receiver: 'anyone@example.com',
-        amount: 100,
-        currency: 'USD',
-      })
+    const response = await client.visit('wallets.transfer').json({
+      receiver: 'anyone@example.com',
+      amount: 100,
+      currency: 'USD',
+    })
 
     response.assertStatus(401)
   })
@@ -115,14 +101,11 @@ test.group('Wallets -> transfer', (group) => {
     const { user: sender, wallet: senderWallet } = await createUserWithBalance(1000, 'USD')
     const receiver = await createUser({}, { withWallets: true })
 
-    const response = await client
-      .visit('wallets.transfer')
-      .loginAs(sender)
-      .json({
-        receiver: receiver.email,
-        amount: 300,
-        currency: 'USD',
-      })
+    const response = await client.visit('wallets.transfer').loginAs(sender).json({
+      receiver: receiver.email,
+      amount: 300,
+      currency: 'USD',
+    })
 
     response.assertStatus(200)
 
@@ -168,7 +151,10 @@ test.group('Wallets -> transfer', (group) => {
 test.group('Wallets -> transfer (concurrency)', (group) => {
   group.each.setup(() => testUtils.db().truncate())
 
-  test('concurrent transfers with insufficient funds allows only one to succeed', async ({ client, assert }) => {
+  test('concurrent transfers with insufficient funds allows only one to succeed', async ({
+    client,
+    assert,
+  }) => {
     const { user: sender, wallet: senderWallet } = await createUserWithBalance(100, 'USD')
     const receiver = await createUser({}, { withWallets: true })
 

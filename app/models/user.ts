@@ -3,7 +3,7 @@ import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { type AccessToken, DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
-import Wallet from "#models/wallet";
+import Wallet from '#models/wallet'
 import { hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 
@@ -15,10 +15,10 @@ export default class User extends compose(UserSchema, withAuthFinder(hash)) {
   declare wallets: HasMany<typeof Wallet>
 
   get initials() {
-    return `${this.firstName.charAt(0)}${this.lastName.charAt(0)}`.toUpperCase();
+    return `${this.firstName.charAt(0)}${this.lastName.charAt(0)}`.toUpperCase()
   }
 
   get fullName() {
-    return `${this.firstName} ${this.lastName}`;
+    return `${this.firstName} ${this.lastName}`
   }
 }

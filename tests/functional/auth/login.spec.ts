@@ -1,6 +1,6 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import User from "#models/user";
+import User from '#models/user'
 
 test.group('Auth login', (group) => {
   group.each.setup(() => {
@@ -22,7 +22,7 @@ test.group('Auth login', (group) => {
           field: 'password',
           message: 'The password field must be defined',
           rule: 'required',
-        }
+        },
       ],
     })
   })
@@ -37,7 +37,7 @@ test.group('Auth login', (group) => {
 
     const response = await client.visit('auth.login').json({
       email: 'john@test.com',
-      password: 'secret'
+      password: 'secret',
     })
 
     response.assertStatus(200)

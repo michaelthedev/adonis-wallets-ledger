@@ -1,6 +1,6 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import User from "#models/user";
+import User from '#models/user'
 
 test.group('Auth signup', (group) => {
   group.each.setup(() => {
@@ -56,11 +56,11 @@ test.group('Auth signup', (group) => {
       data: {
         user: {
           email: 'john@test.com',
-        }
+        },
       },
     })
 
-    const body = response.body();
+    const body = response.body()
     const user = await User.findOrFail(body.data?.user.id)
     assert.equal(user.email, 'john@test.com')
   })

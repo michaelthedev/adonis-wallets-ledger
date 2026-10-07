@@ -11,5 +11,5 @@ export const transferValidator = vine.create({
 
 export const depositValidator = vine.create({
   amount: amountRule(),
-  currency: vine.enum(SUPPORTED_CURRENCIES)
+  currency: vine.enum(SUPPORTED_CURRENCIES),
 })

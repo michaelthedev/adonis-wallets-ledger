@@ -52,10 +52,7 @@ export async function createUser(
  * const wallet = await createWallet(user, 'USD')
  */
 export async function createWallet(user: User, currency = 'USD') {
-  return await Wallet.firstOrCreate(
-    { userId: user.id, currency },
-    { userId: user.id, currency }
-  )
+  return await Wallet.firstOrCreate({ userId: user.id, currency }, { userId: user.id, currency })
 }
 
 /**
@@ -64,11 +61,7 @@ export async function createWallet(user: User, currency = 'USD') {
  * @example
  * const { wallet, transaction, ledgerEntry } = await fundWallet(wallet, 500)
  */
-export async function fundWallet(
-  wallet: Wallet,
-  amount: number,
-  currency?: string
-) {
+export async function fundWallet(wallet: Wallet, amount: number, currency?: string) {
   const transaction = await Transaction.create({
     type: 'deposit',
     status: 'completed',

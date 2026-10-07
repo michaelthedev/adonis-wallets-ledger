@@ -8,7 +8,18 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class AuthAccessTokenSchema extends BaseModel {
-  static $columns = ['abilities', 'createdAt', 'expiresAt', 'hash', 'id', 'lastUsedAt', 'name', 'tokenableId', 'type', 'updatedAt'] as const
+  static $columns = [
+    'abilities',
+    'createdAt',
+    'expiresAt',
+    'hash',
+    'id',
+    'lastUsedAt',
+    'name',
+    'tokenableId',
+    'type',
+    'updatedAt',
+  ] as const
   $columns = AuthAccessTokenSchema.$columns
   @column()
   declare abilities: string
@@ -33,7 +44,16 @@ export class AuthAccessTokenSchema extends BaseModel {
 }
 
 export class LedgerEntrySchema extends BaseModel {
-  static $columns = ['amount', 'createdAt', 'currency', 'direction', 'id', 'transactionId', 'updatedAt', 'walletId'] as const
+  static $columns = [
+    'amount',
+    'createdAt',
+    'currency',
+    'direction',
+    'id',
+    'transactionId',
+    'updatedAt',
+    'walletId',
+  ] as const
   $columns = LedgerEntrySchema.$columns
   @column()
   declare amount: bigint | number
@@ -54,7 +74,15 @@ export class LedgerEntrySchema extends BaseModel {
 }
 
 export class TransactionSchema extends BaseModel {
-  static $columns = ['completedAt', 'createdAt', 'id', 'idempotencyKey', 'status', 'type', 'uid'] as const
+  static $columns = [
+    'completedAt',
+    'createdAt',
+    'id',
+    'idempotencyKey',
+    'status',
+    'type',
+    'uid',
+  ] as const
   $columns = TransactionSchema.$columns
   @column.dateTime()
   declare completedAt: DateTime | null
@@ -73,7 +101,15 @@ export class TransactionSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'firstName', 'id', 'lastName', 'password', 'updatedAt'] as const
+  static $columns = [
+    'createdAt',
+    'email',
+    'firstName',
+    'id',
+    'lastName',
+    'password',
+    'updatedAt',
+  ] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

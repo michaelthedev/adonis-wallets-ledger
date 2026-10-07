@@ -1,5 +1,5 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
-import Transaction from '#models/transaction'
+import type Transaction from '#models/transaction'
 
 export default class TransactionTransformer extends BaseTransformer<Transaction> {
   toObject() {

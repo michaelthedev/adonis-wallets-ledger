@@ -11,13 +11,10 @@ test.group('Wallets -> deposit', (group) => {
     const user = await createUser()
     const wallet = await createWallet(user, 'USD')
 
-    const response = await client
-      .visit('wallets.deposit')
-      .loginAs(user)
-      .json({
-        amount: 500,
-        currency: 'USD'
-      })
+    const response = await client.visit('wallets.deposit').loginAs(user).json({
+      amount: 500,
+      currency: 'USD',
+    })
 
     response.assertStatus(200)
 
@@ -36,13 +33,10 @@ test.group('Wallets -> deposit', (group) => {
   test('deposit fails on negative amount', async ({ client }) => {
     const user = await createUser()
 
-    const response = await client
-      .visit('wallets.deposit')
-      .loginAs(user)
-      .json({
-        amount: -1,
-        currency: 'USD'
-      })
+    const response = await client.visit('wallets.deposit').loginAs(user).json({
+      amount: -1,
+      currency: 'USD',
+    })
 
     response.assertStatus(422)
     response.assertBodyContains({
@@ -58,13 +52,10 @@ test.group('Wallets -> deposit', (group) => {
   test('deposit fails on zero amount', async ({ client }) => {
     const user = await createUser()
 
-    const response = await client
-      .visit('wallets.deposit')
-      .loginAs(user)
-      .json({
-        amount: 0,
-        currency: 'USD'
-      })
+    const response = await client.visit('wallets.deposit').loginAs(user).json({
+      amount: 0,
+      currency: 'USD',
+    })
 
     response.assertStatus(422)
     response.assertBodyContains({
@@ -80,13 +71,10 @@ test.group('Wallets -> deposit', (group) => {
   test('deposit fails on decimal amount', async ({ client }) => {
     const user = await createUser()
 
-    const response = await client
-      .visit('wallets.deposit')
-      .loginAs(user)
-      .json({
-        amount: 10.5,
-        currency: 'USD'
-      })
+    const response = await client.visit('wallets.deposit').loginAs(user).json({
+      amount: 10.5,
+      currency: 'USD',
+    })
 
     response.assertStatus(422)
     response.assertBodyContains({
@@ -102,25 +90,20 @@ test.group('Wallets -> deposit', (group) => {
   test('deposit fails on invalid currency', async ({ client }) => {
     const user = await createUser()
 
-    const response = await client
-      .visit('wallets.deposit')
-      .loginAs(user)
-      .json({
-        amount: 10,
-        // @ts-ignore
-        currency: 'XYZ'
-      })
+    const response = await client.visit('wallets.deposit').loginAs(user).json({
+      amount: 10,
+      // @ts-ignore
+      currency: 'XYZ',
+    })
 
     response.assertStatus(422)
   })
 
   test('deposit fails on missing token', async ({ client }) => {
-    const response = await client
-      .visit('wallets.deposit')
-      .json({
-        amount: 10,
-        currency: 'USD'
-      })
+    const response = await client.visit('wallets.deposit').json({
+      amount: 10,
+      currency: 'USD',
+    })
 
     response.assertStatus(401)
   })

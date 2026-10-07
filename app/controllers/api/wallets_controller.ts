@@ -1,68 +1,69 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import ApiController from "#controllers/api/api_controller";
+import ApiController from '#controllers/api/api_controller'
 
-import {depositValidator, transferValidator} from "#validators/wallet";
-import {inject} from "@adonisjs/core";
-import WalletService from "#services/wallet_service";
-import TransferService from "#services/transfer_service";
-import {DepositService} from "#services/deposit_service";
+import { depositValidator, transferValidator } from '#validators/wallet'
+import { inject } from '@adonisjs/core'
+import WalletService from '#services/wallet_service'
+import TransferService from '#services/transfer_service'
+import { DepositService } from '#services/deposit_service'
 import TransactionTransformer from '#transformers/transaction_transformer'
 
 export default class WalletsController extends ApiController {
   @inject()
   async index({}: HttpContext, walletService: WalletService) {
     return this.response({
-      data: await walletService.listWithBalance(this.getUser().id)
-    });
+      data: await walletService.listWithBalance(this.getUser().id),
+    })
   }
 
   async single({ params }: HttpContext) {
     const user = this.getUser()
-    const wallet = await user.related('wallets').query()
-      .where('id', params.id).first();
+    const wallet = await user.related('wallets').query().where('id', params.id).first()
 
-    if (! wallet) {
+    if (!wallet) {
       return this.response({
         status: 404,
         message: 'Invalid wallet selected',
-      });
+      })
     }
 
     return this.response({
       message: 'success',
-      data: wallet
+      data: wallet,
     })
   }
 
   @inject()
   async deposit({ request }: HttpContext, depositService: DepositService) {
-    const user = this.getUser();
-    const { amount, currency } = await request.validateUsing(depositValidator);
+    const user = this.getUser()
+    const { amount, currency } = await request.validateUsing(depositValidator)
 
-    const result = await depositService.init(user.id, amount, currency);
+    const result = await depositService.init(user.id, amount, currency)
     return this.response({
       status: 200,
       message: 'Deposit successful',
       data: {
-        transaction: TransactionTransformer.transform(result)
-      }
-    });
+        transaction: TransactionTransformer.transform(result),
+      },
+    })
   }
 
   @inject()
-  async transfer(
-    { request }: HttpContext,
-    transferService: TransferService
-  ) {
-    const user = this.getUser();
-    const payload = await request.validateUsing(transferValidator);
+  async transfer({ request }: HttpContext, transferService: TransferService) {
+    const user = this.getUser()
+    const payload = await request.validateUsing(transferValidator)
 
-    const result = await transferService.init(user.id, payload.receiver, payload.amount, payload.currency);
+    const result = await transferService.init(
+      user.id,
+      payload.receiver,
+      payload.amount,
+      payload.currency
+    )
 
     return this.response({
       status: 200,
       message: 'Transfer successful',
-      data: TransactionTransformer.transform(result)
-    });
+      data: TransactionTransformer.transform(result),
+    })
   }
 }
