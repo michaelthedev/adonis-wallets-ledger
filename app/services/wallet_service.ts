@@ -1,8 +1,7 @@
-// import User from "#models/user";
 import Wallet from '#models/wallet'
 import type { TransactionClientContract } from '@adonisjs/lucid/types/database'
 import db from '@adonisjs/lucid/services/db'
-import { DEFAULT_CURRENCIES } from '../constants/currencies.js'
+import { DEFAULT_CURRENCIES } from '#constants/currencies'
 
 export default class WalletService {
   async createDefault(userId: number, trx?: TransactionClientContract) {
