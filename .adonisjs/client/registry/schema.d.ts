@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /// <reference path="../manifest.d.ts" />
 
-import type { ExtractBody, ExtractErrorResponse, ExtractQuery, ExtractQueryForGet, ExtractResponse } from '@tuyau/core/types'
+import type { ExtractBody, ExtractErrorResponse, ExtractQuery, ExtractQueryForGet, ExtractRawResponse, ExtractResponse } from '@tuyau/core/types'
 import type { InferInput, SimpleError } from '@vinejs/vine/types'
 
 export type ParamValue = string | number | bigint | boolean
@@ -17,6 +17,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/user').loginValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['login']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['login']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['login']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.register': {
@@ -29,9 +30,10 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/user').signupValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['register']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['register']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['register']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'profile.profile.show': {
+  'profile.show': {
     methods: ["GET","HEAD"]
     pattern: '/api/v1/account/profile'
     types: {
@@ -41,9 +43,10 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/profile_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/profile_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/profile_controller').default['show']>>>
     }
   }
-  'profile.auth.logout': {
+  'auth.logout': {
     methods: ["POST"]
     pattern: '/api/v1/account/logout'
     types: {
@@ -53,6 +56,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['logout']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['logout']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/api/auth_controller').default['logout']>>>
     }
   }
   'wallets.index': {
@@ -65,6 +69,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['index']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['index']>>>
     }
   }
   'wallets.deposit': {
@@ -77,6 +82,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/wallet').depositValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['deposit']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['deposit']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['deposit']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'wallets.transfer': {
@@ -89,6 +95,7 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/wallet').transferValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['transfer']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['transfer']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['transfer']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'wallets.single': {
@@ -101,6 +108,7 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['single']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['single']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/api/wallets_controller').default['single']>>>
     }
   }
 }

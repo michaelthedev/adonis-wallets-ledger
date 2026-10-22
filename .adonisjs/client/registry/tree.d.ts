@@ -5,14 +5,10 @@ export interface ApiDefinition {
   auth: {
     login: typeof routes['auth.login']
     register: typeof routes['auth.register']
+    logout: typeof routes['auth.logout']
   }
   profile: {
-    profile: {
-      show: typeof routes['profile.profile.show']
-    }
-    auth: {
-      logout: typeof routes['profile.auth.logout']
-    }
+    show: typeof routes['profile.show']
   }
   wallets: {
     index: typeof routes['wallets.index']
