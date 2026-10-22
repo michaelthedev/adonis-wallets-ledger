@@ -31,7 +31,7 @@ export default class AuthController extends ApiController {
     const user = await db.transaction(async (trx) => {
       const txUser = await User.create({ firstName, lastName, email, password }, { client: trx })
 
-      await walletService.createDefault(user.id, trx)
+      await walletService.createDefault(txUser.id, trx)
       return txUser
     })
 
