@@ -33,14 +33,20 @@ export class AuthAccessTokenSchema extends BaseModel {
 }
 
 export class ExchangeRateSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'updatedAt'] as const
+  static $columns = ['baseCurrency', 'createdAt', 'id', 'quoteCurrency', 'rate', 'snapshotAt'] as const
   $columns = ExchangeRateSchema.$columns
+  @column()
+  declare baseCurrency: string
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
   @column({ isPrimary: true })
   declare id: number
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+  @column()
+  declare quoteCurrency: string
+  @column()
+  declare rate: string
+  @column.dateTime()
+  declare snapshotAt: DateTime
 }
 
 export class LedgerEntrySchema extends BaseModel {
