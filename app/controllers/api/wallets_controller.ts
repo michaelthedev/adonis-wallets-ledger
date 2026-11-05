@@ -7,6 +7,7 @@ import WalletService from '#services/wallet_service'
 import TransferService from '#services/transfer_service'
 import { DepositService } from '#services/deposit_service'
 import TransactionTransformer from '#transformers/transaction_transformer'
+import WalletTransformer from '#transformers/wallet_transformer'
 
 export default class WalletsController extends ApiController {
   @inject()
@@ -29,7 +30,7 @@ export default class WalletsController extends ApiController {
 
     return this.response({
       message: 'success',
-      data: wallet,
+      data: WalletTransformer.transform(wallet),
     })
   }
 
