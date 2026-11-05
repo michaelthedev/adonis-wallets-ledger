@@ -32,8 +32,19 @@ export class AuthAccessTokenSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class ExchangeRateSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'updatedAt'] as const
+  $columns = ExchangeRateSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class LedgerEntrySchema extends BaseModel {
-  static $columns = ['amount', 'createdAt', 'currency', 'direction', 'id', 'transactionId', 'updatedAt', 'walletId'] as const
+  static $columns = ['amount', 'createdAt', 'currency', 'direction', 'id', 'transactionId', 'walletId'] as const
   $columns = LedgerEntrySchema.$columns
   @column()
   declare amount: bigint | number
@@ -47,8 +58,6 @@ export class LedgerEntrySchema extends BaseModel {
   declare id: number
   @column()
   declare transactionId: number
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
   @column()
   declare walletId: number
 }
