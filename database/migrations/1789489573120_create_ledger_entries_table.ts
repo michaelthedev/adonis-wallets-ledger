@@ -26,7 +26,7 @@ export default class extends BaseSchema {
       table.string('currency').notNullable()
 
       table.timestamp('created_at')
-      table.timestamp('updated_at')
+      // table.timestamp('updated_at') // no updates to ledger
     })
   }
 

@@ -55,7 +55,6 @@ test.group('Auth login', (group) => {
     // confirm the token has been revoked
     const profileResponse = await client.visit('profile.show').bearerToken(body.data?.token)
 
-    profileResponse.dumpBody()
     profileResponse.assertStatus(401)
   })
 })
